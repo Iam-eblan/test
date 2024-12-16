@@ -1,0 +1,24 @@
+import hashlib
+import time
+
+class SimpleMiner:
+    def __init__(self, prefix_zeros):
+        self.prefix_zeros = prefix_zeros
+        self.difficulty = '0' * prefix_zeros
+
+    def mine(self, block_data):
+        nonce = 0
+        while True:
+            block = f"{block_data}{nonce}".encode()
+            block_hash = hashlib.sha256(block).hexdigest()
+            if block_hash.startswith(self.difficulty):
+                print(f"Найдено: {block_hash} с nonce: {nonce}")
+                return block_hash
+            nonce += 1
+
+if __name__ == "__main__":
+    miner = SimpleMiner(prefix_zeros=4)  # Установите сложность
+    block_data = "Данные блока"
+    start_time = time.time()
+    miner.mine(block_data)
+    print(f"Время выполнения: {time.time() - start_time} секунд")
